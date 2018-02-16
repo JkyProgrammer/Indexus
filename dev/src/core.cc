@@ -74,7 +74,8 @@ int main () {
  std::cout << "Here we go.\n";
  narray.push_back(new Node(1, "1~Hi there, User.", 2));
  narray.push_back(new Node(2, "1~I'm Indexus", 5));
- narray.push_back(new Node(5, "1~Printing myself!", 0));
+ narray.push_back(new Node(5, "1~Printing myself!", 3));
+ narray.push_back(new Node(3, "1~Looping...", 3));
  
  while (shouldContinueExecuting) {
   // Get by name
