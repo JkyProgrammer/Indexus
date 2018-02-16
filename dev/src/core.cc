@@ -44,10 +44,39 @@ std::vector<std::string> split (const std::string &s, char delim) {
 
 vector<Node*> narray;
 
+int toInt (string in) {
+	int val = 0;
+	stringstream converter(in);
+	converter >> val;
+	return val;
+}
+
 void interpret (string instruction) {
  std::vector<string> splitInstr = split (instruction, '~');
- if (splitInstr.at (0).compare ("1") == 0) {
-  std::cout << splitInstr.at(1) << "\n";
+ string instr = splitInstr.at(0);
+ if (instr.compare ("cout") == 0) {
+   std::cout << splitInstr.at(1) << "\n";
+ } else if (instr.compare ("movt") == 0) {
+	 //std::cout << splitInstr.at(1) << "\n";
+	 string reg = splitInstr.at(1);
+	 int x = toInt (splitInstr.at(2));
+	 if (reg.compare("rega")) {
+		 rega = x;
+	 } else if (reg.compare("regb")) {
+		 regb = x;
+	 } else if (reg.compare("regc")) {
+		 regc = x;
+	 } else if (reg.compare("regd")) {
+		 regd = x;
+	 } else if (reg.compare("rege")) {
+		 rege = x;
+	 } else if (reg.compare("regf")) {
+		 regf = x;
+	 } else if (reg.compare("regg")) {
+		 regg = x;
+	 } else if (reg.compare("regh")) {
+		 regh = x;
+	 }
  }
 }
 
@@ -65,6 +94,15 @@ int getNodeWithName (int nam) {
  return ret;
 }
 
+int rega = 0;
+int regb = 0;
+int regc = 0;
+int regd = 0;
+int rege = 0;
+int regf = 0;
+int regg = 0;
+int regh = 0;
+
 int main () {
  //std::cout << "Hi there, User.\n";
  //std::cout << "I’m Indexus.\n";
@@ -72,11 +110,11 @@ int main () {
  //
  //Node* newNode = ;
  std::cout << "Here we go.\n";
- narray.push_back(new Node(1, "1~Hi there, User.", 2));
- narray.push_back(new Node(2, "1~I'm Indexus", 5));
- narray.push_back(new Node(5, "1~Printing myself!", 3));
- narray.push_back(new Node(3, "1~Looping...", 3));
- 
+ narray.push_back(new Node(1, "cout~Hi there, User.", 2));
+ narray.push_back(new Node(2, "cout~I'm Indexus", 5));
+ narray.push_back(new Node(5, "cout~Printing myself!", 3));
+ narray.push_back(new Node(3, "cout~Looping...", 3));
+
  while (shouldContinueExecuting) {
   // Get by name
   if (namePointer != 0) {
