@@ -51,6 +51,15 @@ int toInt (string in) {
 	return val;
 }
 
+int rega = 0;
+int regb = 0;
+int regc = 0;
+int regd = 0;
+int rege = 0;
+int regf = 0;
+int regg = 0;
+int regh = 0;
+
 void interpret (string instruction) {
  std::vector<string> splitInstr = split (instruction, '~');
  string instr = splitInstr.at(0);
@@ -77,6 +86,28 @@ void interpret (string instruction) {
 	 } else if (reg.compare("regh")) {
 		 regh = x;
 	 }
+ } else if (instr.compare ("incr") == 0) {
+         string reg = splitInstr.at(1);
+	 //int x = toInt (splitInstr.at(2));
+	 if (reg.compare("rega")) {
+		 rega++;
+	 } else if (reg.compare("regb")) {
+		 regb++;
+	 } else if (reg.compare("regc")) {
+		 regc++;
+	 } else if (reg.compare("regd")) {
+		 regd++;
+	 } else if (reg.compare("rege")) {
+		 rege++;
+	 } else if (reg.compare("regf")) {
+		 regf++;
+	 } else if (reg.compare("regg")) {
+		 regg++;
+	 } else if (reg.compare("regh")) {
+		 regh++;
+	 }
+ } else if (instr.compare ("cmpr") == 0) {
+  
  }
 }
 
@@ -93,15 +124,6 @@ int getNodeWithName (int nam) {
  }
  return ret;
 }
-
-int rega = 0;
-int regb = 0;
-int regc = 0;
-int regd = 0;
-int rege = 0;
-int regf = 0;
-int regg = 0;
-int regh = 0;
 
 int main () {
  //std::cout << "Hi there, User.\n";
