@@ -4,45 +4,52 @@
 #include<string>
 #include<iostream>
 #include<pthread.h>
+#include <chrono>
+#include <thread>
 #include<map>
 #include<vector>
 #include<sstream>
 #include<algorithm>
 #include<iterator>
+//#include "interpreter.cc"
 
 using namespace std;
 
 class Node {
- public:
-  int name;
-  string data;
-  int pointer;
- public:
-  Node (int, string, int);
+public:
+	int name;
+	string data;
+	int pointer;
+public:
+	Node (int, string, int);
 };
 
 Node::Node (int n, string d, int p) {
- name=n;
- data=d;
- pointer=p;
+	name=n;
+	data=d;
+	pointer=p;
 }
 
 template<typename Out>
 void split (const std::string &s, char delim, Out result) {
- std::stringstream ss(s);
- std::string item;
- while (std::getline(ss,item,delim)) {
-  *(result++) = item;
- }
+	std::stringstream ss(s);
+	std::string item;
+	while (std::getline(ss,item,delim)) {
+		*(result++) = item;
+	}
 }
 
 std::vector<std::string> split (const std::string &s, char delim) {
- std::vector<std::string> elems;
- split(s, delim, std::back_inserter(elems));
- return elems;
+	std::vector<std::string> elems;
+	split(s, delim, std::back_inserter(elems));
+	return elems;
 }
 
 vector<Node*> narray;
+
+void delay (int x) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(x));
+}
 
 int toInt (string in) {
 	int val = 0;
@@ -51,64 +58,21 @@ int toInt (string in) {
 	return val;
 }
 
-int rega = 0;
-int regb = 0;
-int regc = 0;
-int regd = 0;
-int rege = 0;
-int regf = 0;
-int regg = 0;
-int regh = 0;
+std::vector<std::string> memory;
 
 void interpret (string instruction) {
- std::vector<string> splitInstr = split (instruction, '~');
- string instr = splitInstr.at(0);
- if (instr.compare ("cout") == 0) {
-   std::cout << splitInstr.at(1) << "\n";
- } else if (instr.compare ("movt") == 0) {
-	 //std::cout << splitInstr.at(1) << "\n";
-	 string reg = splitInstr.at(1);
-	 int x = toInt (splitInstr.at(2));
-	 if (reg.compare("rega")) {
-		 rega = x;
-	 } else if (reg.compare("regb")) {
-		 regb = x;
-	 } else if (reg.compare("regc")) {
-		 regc = x;
-	 } else if (reg.compare("regd")) {
-		 regd = x;
-	 } else if (reg.compare("rege")) {
-		 rege = x;
-	 } else if (reg.compare("regf")) {
-		 regf = x;
-	 } else if (reg.compare("regg")) {
-		 regg = x;
-	 } else if (reg.compare("regh")) {
-		 regh = x;
-	 }
- } else if (instr.compare ("incr") == 0) {
-         string reg = splitInstr.at(1);
-	 //int x = toInt (splitInstr.at(2));
-	 if (reg.compare("rega")) {
-		 rega++;
-	 } else if (reg.compare("regb")) {
-		 regb++;
-	 } else if (reg.compare("regc")) {
-		 regc++;
-	 } else if (reg.compare("regd")) {
-		 regd++;
-	 } else if (reg.compare("rege")) {
-		 rege++;
-	 } else if (reg.compare("regf")) {
-		 regf++;
-	 } else if (reg.compare("regg")) {
-		 regg++;
-	 } else if (reg.compare("regh")) {
-		 regh++;
-	 }
- } else if (instr.compare ("cmpr") == 0) {
-  
- }
+	std::vector<string> splitInstr = split (instruction, '~');
+	string instr = splitInstr.at(0);
+	if (instr.compare ("print") == 0) {
+		std::cout << memory.at(toInt (splitInstr.at(1))) << "\n";
+	} else if (instr.compare ("apmem") == 0) {
+		//std::cout << splitInstr.at(1) << "\n";
+		memory.push_back (splitInstr.at(1));
+	} else if (instr.compare ("incre") == 0) {
+		memory[toInt (splitInstr.at(1))] = std::to_string(toInt(memory[toInt (splitInstr.at(1))]) + 1);
+	} else if (instr.compare ("delay") == 0) {
+		delay (toInt(splitInstr.at(1)));
+	}
 }
 
 int namePointer = 1;
@@ -116,37 +80,45 @@ int namePointer = 1;
 bool shouldContinueExecuting = true;
 
 int getNodeWithName (int nam) {
- int ret = 0;
- for (int index=0; index < narray.size(); index++) {
-  if ((narray [index] -> name) == nam) {
-   ret = index;
-  }
- }
- return ret;
+	int ret = 0;
+	for (int index=0; index < narray.size(); index++) {
+		if ((narray [index] -> name) == nam) {
+			ret = index;
+		}
+	}
+	return ret;
 }
 
 int main () {
- //std::cout << "Hi there, User.\n";
- //std::cout << "I’m Indexus.\n";
- // Start process
- //
- //Node* newNode = ;
- std::cout << "Here we go.\n";
- narray.push_back(new Node(1, "cout~Hi there, User.", 2));
- narray.push_back(new Node(2, "cout~I'm Indexus", 5));
- narray.push_back(new Node(5, "cout~Printing myself!", 3));
- narray.push_back(new Node(3, "cout~Looping...", 3));
+	//std::cout << "Hi there, User.\n";
+	//std::cout << "I’m Indexus.\n";
+	// Start process
+	//
+	//Node* newNode = ;
+	std::cout << "Here we go.\n";
+	// narray.push_back(new Node(1, "apmem~Hi there, User.", 2));
+	// narray.push_back(new Node(2, "apmem~I'm Indexus", 3));
+	// narray.push_back(new Node(3, "apmem~Printing myself!", 4));
+	// narray.push_back(new Node(4, "apmem~Looping...", 6));
+	// narray.push_back(new Node(6, "print~0", 7));
+	// narray.push_back(new Node(7, "print~1", 8));
+	// narray.push_back(new Node(8, "print~2", 5));
+	// narray.push_back(new Node(5, "print~3", 5));
+	narray.push_back (new Node(1, "apmem~4", 2));
+	narray.push_back (new Node(2, "print~0", 3));
+	narray.push_back (new Node(3, "incre~0", 4));
+	narray.push_back (new Node(4, "delay~100", 2));
 
- while (shouldContinueExecuting) {
-  // Get by name
-  if (namePointer != 0) {
-   int index = getNodeWithName(namePointer);
-   Node* n = narray [index];
-   interpret (n -> data);
-   namePointer = (n -> pointer);
-  } else {
-   shouldContinueExecuting = false;
-  }
- }
- return 0;
+	while (shouldContinueExecuting) {
+		// Get by name
+		if (namePointer != 0) {
+			int index = getNodeWithName(namePointer);
+			Node* n = narray [index];
+			interpret (n -> data);
+			namePointer = (n -> pointer);
+		} else {
+			shouldContinueExecuting = false;
+		}
+	}
+	return 0;
 }
