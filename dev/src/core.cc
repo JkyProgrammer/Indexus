@@ -11,24 +11,7 @@
 #include<sstream>
 #include<algorithm>
 #include<iterator>
-//#include "interpreter.cc"
-
-using namespace std;
-
-class Node {
-public:
-	int name;
-	string data;
-	int pointer;
-public:
-	Node (int, string, int);
-};
-
-Node::Node (int n, string d, int p) {
-	name=n;
-	data=d;
-	pointer=p;
-}
+#include "node.cc"
 
 vector<Node*> narray;
 int startPointer = 1;
