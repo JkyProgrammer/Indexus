@@ -30,6 +30,10 @@ Node::Node (int n, string d, int p) {
 	pointer=p;
 }
 
+vector<Node*> narray;
+int startPointer = 1;
+std::vector<std::string> memory;
+
 template<typename Out>
 void split (const std::string &s, char delim, Out result) {
 	std::stringstream ss(s);
@@ -45,8 +49,6 @@ std::vector<std::string> split (const std::string &s, char delim) {
 	return elems;
 }
 
-vector<Node*> narray;
-
 void delay (int x) {
 	std::this_thread::sleep_for(std::chrono::milliseconds(x));
 }
@@ -57,8 +59,6 @@ int toInt (string in) {
 	converter >> val;
 	return val;
 }
-
-std::vector<std::string> memory;
 
 void interpret (string instruction) {
 	std::vector<string> splitInstr = split (instruction, '~');
@@ -75,9 +75,7 @@ void interpret (string instruction) {
 	}
 }
 
-int namePointer = 1;
-
-bool shouldContinueExecuting = true;
+//bool shouldContinueExecuting = true;
 
 int getNodeWithName (int nam) {
 	int ret = 0;
@@ -87,6 +85,22 @@ int getNodeWithName (int nam) {
 		}
 	}
 	return ret;
+}
+
+void run (int startNode) {
+	int ptr = startNode;
+	bool shldContinue = true
+	while (shldContinue) {
+		// Get by name
+		if (namePointer != 0) {
+			int index = getNodeWithName(prt);
+			Node* n = narray [index];
+			interpret (n -> data);
+			ptr = (n -> pointer);
+		} else {
+			shldContinue = false;
+		}
+	}
 }
 
 int main () {
@@ -109,16 +123,6 @@ int main () {
 	narray.push_back (new Node(3, "incre~0", 4));
 	narray.push_back (new Node(4, "delay~100", 2));
 
-	while (shouldContinueExecuting) {
-		// Get by name
-		if (namePointer != 0) {
-			int index = getNodeWithName(namePointer);
-			Node* n = narray [index];
-			interpret (n -> data);
-			namePointer = (n -> pointer);
-		} else {
-			shouldContinueExecuting = false;
-		}
-	}
+	run (startPointer);
 	return 0;
 }
