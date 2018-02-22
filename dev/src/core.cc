@@ -12,6 +12,7 @@
 #include<algorithm>
 #include<iterator>
 #include "inclusion/node.cc"
+#include "inclusion/utilities.cc"
 
 vector<Node*> narray;
 int startPointer = 1;
