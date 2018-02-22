@@ -1,3 +1,14 @@
+#include<stdint.h>
+#include<stddef.h>
+#include<stdbool.h>
+#include<string>
+#include<iostream>
+#include<pthread.h>
+#include <chrono>
+#include <thread>
+#include<vector>
+#include<sstream>
+
 template<typename Out>
 void split (const std::string &s, char delim, Out result) {
 	std::stringstream ss(s);
