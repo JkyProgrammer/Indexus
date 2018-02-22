@@ -1,5 +1,5 @@
 echo "Indexus builder started"
-DATE=`date +%d-%m-%Y_%H:%M`
+DATE=`date +%d-%m-%Y-%H:%M`
 echo "Entering dev/src/"
 cd dev/src/
 truncate -s 0 ../bin/final.cc
