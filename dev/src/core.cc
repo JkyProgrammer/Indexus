@@ -55,6 +55,12 @@ void interpret (string instruction) {
 		memory[toInt (splitInstr.at(1))] = std::to_string(toInt(memory[toInt (splitInstr.at(1))]) + 1);
 	} else if (instr.compare ("delay") == 0) {
 		delay (toInt(splitInstr.at(1)));
+	} else if (instr.compare ("popla") == 0) {
+		memory.pop_back();
+	} else if (instr.compare ("runsc") == 0) {
+		// Run script
+	} else if (instr.compare ("stcho") == 0) {
+		// Start chain on other node
 	}
 }
 
@@ -72,11 +78,11 @@ int getNodeWithName (int nam) {
 
 void run (int startNode) {
 	int ptr = startNode;
-	bool shldContinue = true
+	bool shldContinue = true;
 	while (shldContinue) {
 		// Get by name
-		if (namePointer != 0) {
-			int index = getNodeWithName(prt);
+		if (ptr != 0) {
+			int index = getNodeWithName(ptr);
 			Node* n = narray [index];
 			interpret (n -> data);
 			ptr = (n -> pointer);
