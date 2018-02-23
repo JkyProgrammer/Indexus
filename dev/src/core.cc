@@ -22,20 +22,26 @@ void interpret (string instruction) {
 	std::vector<string> splitInstr = split (instruction, '~');
 	string instr = splitInstr.at(0);
 	if (instr.compare ("print") == 0) {
+		// Output whatever is at a specified point in memory
 		std::cout << memory.at(toInt (splitInstr.at(1))) << "\n";
 	} else if (instr.compare ("apmem") == 0) {
 		//std::cout << splitInstr.at(1) << "\n";
+		// Append something to the memory array
 		memory.push_back (splitInstr.at(1));
 	} else if (instr.compare ("incre") == 0) {
+		// Increment a specified point in memory
 		memory[toInt (splitInstr.at(1))] = std::to_string(toInt(memory[toInt (splitInstr.at(1))]) + 1);
 	} else if (instr.compare ("delay") == 0) {
+		// Wait a number of milliseconds
 		delay (toInt(splitInstr.at(1)));
 	} else if (instr.compare ("popla") == 0) {
+		// Remove the last item from memory
 		memory.pop_back();
 	} else if (instr.compare ("runsc") == 0) {
 		// Run script
-	} else if (instr.compare ("stcho") == 0) {
-		// Start chain on other node
+	} else if (instr.compare ("sttch") == 0) {
+		// Start chain on other thread
+		std::thread newThread(run, toInt (splitInstr.at(1)));
 	}
 }
 
