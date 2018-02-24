@@ -21,7 +21,7 @@ do
   echo "$line"
 done
 echo "Compiling sources"
-g++ final.cc -o "Indexus-$DATE"
+g++ final.cc -std=c++11 -o "Indexus-$DATE"
 echo "Cleaning up"
 rm final.cc
 cp "Indexus-$DATE" "../../Indexus-Latest"
