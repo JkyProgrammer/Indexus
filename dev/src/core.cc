@@ -69,7 +69,10 @@ void interpret (string instruction) {
 		// Read the contents of a file into memory
 		string cont = readContentsOfFile (splitInstr[1]);
 		memory.push_back (cont);
-	}
+	} else if (instr.compare (“logtx”) == 0) {
+    string tx = splitInstr[1];
+    log (tx);
+  }
 }
 
 void run (int startNode) {
