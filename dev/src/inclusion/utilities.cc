@@ -23,6 +23,13 @@ string readContentsOfFile (string path) {
     return (content);
 }
 
+void writeContentToFile (string content, string path) {
+	ofstream ofile;
+	ofile.open (path);
+	ofile << content << "\n";
+	ofile.close ();
+}
+
 std::string exec(string in) {
 	const char* cmd = in.c_str();
     std::array<char, 128> buffer;

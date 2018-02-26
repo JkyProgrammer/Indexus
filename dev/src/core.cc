@@ -70,7 +70,14 @@ void interpret (string instruction) {
 		// Read the contents of a file into memory
 		string cont = readContentsOfFile (splitInstr[1]);
 		memory.push_back (cont);
-	} else if (instr.compare (“logtx”) == 0) {
+	} else if (instr.compare ("writf") == 0) {
+		// Write the contents of a point in memory into a file
+		string path = splitInstr[1];
+		int contentLoc = toInt(splitInstr[2]);
+		string content = memory [contentLoc];
+		writeContentToFile (content, path);
+	} else if (instr.compare ("logtx") == 0) {
+		// Automatically format and write a debug to the log file
     string tx = splitInstr[1];
     log (tx);
   }
@@ -108,13 +115,14 @@ int main () {
 	// narray.push_back(new Node(7, "print~1", 8));
 	// narray.push_back(new Node(8, "print~2", 5));
 	// narray.push_back(new Node(5, "print~3", 5));
-	narray.push_back (new Node(1, "readf~textFile.txt", 6));
-	narray.push_back (new Node(6, "print~0", 7));
-	narray.push_back (new Node(7, "popla", 2));
-	narray.push_back (new Node(2, "apmem~4", 3));
-	narray.push_back (new Node(3, "print~0", 4));
+	//narray.push_back (new Node(1, "readf~textFile.txt", 6));
+	//narray.push_back (new Node(6, "print~0", 7));
+	//narray.push_back (new Node(7, "popla", 2));
+	narray.push_back (new Node(1, "apmem~4", 3));
+	narray.push_back (new Node(3, "print~0", 8));
+	narray.push_back (new Node(8, "logtx~0", 4));
 	narray.push_back (new Node(4, "incre~0", 5));
-	narray.push_back (new Node(5, "delay~0", 3));
+	narray.push_back (new Node(5, "delay~100", 3));
 
 	run (startPointer);
 	return 0;

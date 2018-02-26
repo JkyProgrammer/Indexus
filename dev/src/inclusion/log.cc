@@ -14,5 +14,29 @@
 #include <array>
 #include <iomanip>
 #include <fstream>
+#include <ctime>
+using namespace std;
 
-void log (string tx) {}
+string timing () {
+	auto t = std::time(nullptr);
+  auto tm = *std::localtime(&t);
+	std::ostringstream oss;
+	oss << std::put_time(&tm, "%d-%m-%Y %H.%M.%S");
+  return oss.str();
+}
+
+string formatForLogFile (string tx) {
+	string timingPoint = "[" + timing() + "]";
+	string middleSect = " Indexus -> ";
+	string content = tx;
+	string finall = timingPoint + middleSect + content;
+	return finall;
+}
+
+void log (string tx) {
+	ofstream logfile;
+	logfile.open ("indexus.log");
+	string ftx = formatForLogFile (tx);
+	logfile << ftx << "\n";
+	logfile.close ();
+}
