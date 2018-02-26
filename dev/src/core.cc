@@ -106,6 +106,26 @@ void interpret (string instruction) {
 		if (atMem1.compare (atMem2) == 1) {
 			interpret ("runsc~" + splitInstr[3]);
 		}
+	} else if (instr.compare ("cocat") == 0) {
+		// Concatenate strings
+		int memRef1 = toInt (splitInstr[1]);
+		int memRef2 = toInt (splitInstr[2]);
+		
+		string atMem1 = memory[memRef1];
+		string atMem2 = memory[memRef2];
+		
+		string output = atMem1 + atMem2;
+		memory.push_back (output);
+	} else if (instr.compare ("adnum") == 0) {
+		// Add two numbers
+		int memRef1 = toInt (splitInstr[1]);
+		int memRef2 = toInt (splitInstr[2]);
+		
+		int atMem1 = toInt(memory[memRef1]);
+		int atMem2 = toInt(memory[memRef2]);
+		
+		int output = atMem1 + atMem2;
+		memory.push_back (to_string(output));
 	}
 }
 
