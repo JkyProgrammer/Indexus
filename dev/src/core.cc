@@ -78,7 +78,7 @@ void interpret (string instruction) {
 		writeContentToFile (content, path);
 	} else if (instr.compare ("logtx") == 0) {
 		// Automatically format and write a debug to the log file
-    string tx = splitInstr[1];
+    string tx = memory[toInt(splitInstr[1])];
     log (tx);
   }
 }
