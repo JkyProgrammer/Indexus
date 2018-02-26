@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <fstream>
 #include <ctime>
+#include <streambuf>
 using namespace std;
 
 string timing () {
@@ -36,7 +37,9 @@ string formatForLogFile (string tx) {
 void log (string tx) {
 	ofstream logfile;
 	logfile.open ("indexus.log");
+	std::ifstream oldContentF("indexus.log");
+	std::string oldContent((std::istreambuf_iterator<char>(oldContentF)), std::istreambuf_iterator<char>());
 	string ftx = formatForLogFile (tx);
-	logfile << ftx << "\n";
+	logfile << oldContent << ftx << "\n";
 	logfile.close ();
 }
