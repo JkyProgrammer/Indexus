@@ -55,7 +55,11 @@ void interpret (string instruction) {
 		memory.pop_back();
 	} else if (instr.compare ("runsc") == 0) {
 		// Run script from file
-
+		string contents = readContentsOfFile (splitInstr[1]);
+		std::vector<string> contentLines = split (contents, '\n');
+		for (string line : contentLines) {
+			interpret (line);
+		}
 	} else if (instr.compare ("sttch") == 0) {
 		// Start chain on other thread
 		std::thread newThread(convertAndRun, splitInstr.at(1));
@@ -78,9 +82,31 @@ void interpret (string instruction) {
 		writeContentToFile (content, path);
 	} else if (instr.compare ("logtx") == 0) {
 		// Automatically format and write a debug to the log file
-    string tx = memory[toInt(splitInstr[1])];
-    log (tx);
-  }
+		string tx = memory[toInt(splitInstr[1])];
+		log (tx);
+	} else if (instr.compare ("iftru") == 0) {
+		// Compare two values and run a script if the same
+		int memRef1 = toInt (splitInstr[1]);
+		int memRef2 = toInt (splitInstr[2]);
+		
+		string atMem1 = memory[memRef1];
+		string atMem2 = memory[memRef2];
+		
+		if (atMem1.compare (atMem2) == 0) {
+			interpret ("runsc~" + splitInstr[3]);
+		}
+	} else if (instr.compare ("iffal") == 0) {
+		// Compare two values and run a script if different
+		int memRef1 = toInt (splitInstr[1]);
+		int memRef2 = toInt (splitInstr[2]);
+		
+		string atMem1 = memory[memRef1];
+		string atMem2 = memory[memRef2];
+		
+		if (atMem1.compare (atMem2) == 1) {
+			interpret ("runsc~" + splitInstr[3]);
+		}
+	}
 }
 
 void run (int startNode) {
