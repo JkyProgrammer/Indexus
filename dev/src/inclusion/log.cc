@@ -34,12 +34,36 @@ string formatForLogFile (string tx) {
 	return finall;
 }
 
+int getRunCount () {
+	std::ifstream t("logs/runcounter");
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	string oldContent = buffer.str();
+	int val = toInt(oldContent);
+	return val;
+}
+
+void incrementRunCount () {
+	int oldRC = getRunCount ();
+	ofstream rcf;
+	rcf.open ("logs/runcounter");
+	string newVal = to_string(oldRC + 1);
+	rcf << newVal;
+	rcf.close ();
+}
+
 void log (string tx) {
 	ofstream logfile;
-	logfile.open ("indexus.log");
-	std::ifstream oldContentF("indexus.log");
-	std::string oldContent((std::istreambuf_iterator<char>(oldContentF)), std::istreambuf_iterator<char>());
+
+	//std::ifstream oldContentF("indexus.log");
+	//std::string oldContent((std::istreambuf_iterator<char>(oldContentF)), std::istreambuf_iterator<char>());
+	string rc = std::to_string(getRunCount());
+	std::ifstream t("logs/indexus-" + rc +".log");
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	string oldContent = buffer.str();
+	logfile.open ("logs/indexus-" + rc +".log");
 	string ftx = formatForLogFile (tx);
-	logfile << oldContent << ftx << "\n";
+	logfile << (oldContent + ftx + "\n");
 	logfile.close ();
 }

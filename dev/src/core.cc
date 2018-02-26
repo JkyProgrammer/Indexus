@@ -88,10 +88,10 @@ void interpret (string instruction) {
 		// Compare two values and run a script if the same
 		int memRef1 = toInt (splitInstr[1]);
 		int memRef2 = toInt (splitInstr[2]);
-		
+
 		string atMem1 = memory[memRef1];
 		string atMem2 = memory[memRef2];
-		
+
 		if (atMem1.compare (atMem2) == 0) {
 			interpret ("runsc~" + splitInstr[3]);
 		}
@@ -99,10 +99,10 @@ void interpret (string instruction) {
 		// Compare two values and run a script if different
 		int memRef1 = toInt (splitInstr[1]);
 		int memRef2 = toInt (splitInstr[2]);
-		
+
 		string atMem1 = memory[memRef1];
 		string atMem2 = memory[memRef2];
-		
+
 		if (atMem1.compare (atMem2) == 1) {
 			interpret ("runsc~" + splitInstr[3]);
 		}
@@ -110,20 +110,20 @@ void interpret (string instruction) {
 		// Concatenate strings
 		int memRef1 = toInt (splitInstr[1]);
 		int memRef2 = toInt (splitInstr[2]);
-		
+
 		string atMem1 = memory[memRef1];
 		string atMem2 = memory[memRef2];
-		
+
 		string output = atMem1 + atMem2;
 		memory.push_back (output);
 	} else if (instr.compare ("adnum") == 0) {
 		// Add two numbers
 		int memRef1 = toInt (splitInstr[1]);
 		int memRef2 = toInt (splitInstr[2]);
-		
+
 		int atMem1 = toInt(memory[memRef1]);
 		int atMem2 = toInt(memory[memRef2]);
-		
+
 		int output = atMem1 + atMem2;
 		memory.push_back (to_string(output));
 	}
@@ -146,7 +146,10 @@ void run (int startNode) {
 }
 //bool shouldContinueExecuting = true;
 
+int initialNode = 4;
+
 int main () {
+	incrementRunCount();
 	//std::cout << "Hi there, User.\n";
 	//std::cout << "I’m Indexus.\n";
 	// Start process
@@ -164,11 +167,14 @@ int main () {
 	//narray.push_back (new Node(1, "readf~textFile.txt", 6));
 	//narray.push_back (new Node(6, "print~0", 7));
 	//narray.push_back (new Node(7, "popla", 2));
-	narray.push_back (new Node(1, "apmem~4", 3));
-	narray.push_back (new Node(3, "print~0", 8));
-	narray.push_back (new Node(8, "logtx~0", 4));
-	narray.push_back (new Node(4, "incre~0", 5));
-	narray.push_back (new Node(5, "delay~100", 3));
+	narray.push_back (new Node(1, "apmem~!!!RESTART!!!", 2));
+	narray.push_back (new Node(2, "logtx~0", 3));
+	narray.push_back (new Node(3, "popla", initialNode));
+	narray.push_back (new Node(4, "apmem~4", 5));
+	narray.push_back (new Node(5, "donoth~0", 6));
+	narray.push_back (new Node(6, "logtx~0", 7));
+	narray.push_back (new Node(7, "incre~0", 8));
+	narray.push_back (new Node(8, "delay~100", initialNode));
 
 	run (startPointer);
 	return 0;
