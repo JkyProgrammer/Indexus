@@ -68,8 +68,6 @@ void interpret (string instruction) {
 		string toExecute = memory[toInt(splitInstr[1])];
 		string result = exec (toExecute);
 		memory.push_back (result);
-	} else if (instr.compare ("compr") == 0) {
-		// Compare two values and append the result to memory
 	} else if (instr.compare ("readf") == 0) {
 		// Read the contents of a file into memory
 		string cont = readContentsOfFile (splitInstr[1]);
