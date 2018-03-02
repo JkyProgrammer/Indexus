@@ -125,6 +125,11 @@ void interpret (string instruction) {
 
 		int output = atMem1 + atMem2;
 		memory.push_back (to_string(output));
+	} else if (instr.compare ("getin") == 0) {
+		// Get a line of input from the user
+    string inputResult;
+    cin >> inputResult;
+		memory.push_back (inputResult);
 	}
 }
 
@@ -143,38 +148,46 @@ void run (int startNode) {
 		}
 	}
 }
-//bool shouldContinueExecuting = true;
+
+void loadInstructionNodesFrom (string file) {
+  string cont = readContentsOfFile (file);
+  std::vector<string> lines = split (cont, '\n');
+  for (string line : lines) {
+    std::vector<string> parts = split (line, '*');
+    int name = toInt(parts[0]);
+    string instruction = parts[1];
+    int pointer = toInt (parts[2]);
+    narray.push_back (new Node(name, instruction, pointer));
+  }
+}
 
 int initialNode = 4;
 
 int main () {
+  // Increment the run counter, so we generate a new log file
 	incrementRunCount();
-	//std::cout << "Hi there, User.\n";
-	//std::cout << "I’m Indexus.\n";
-	// Start process
-	//
-	//Node* newNode = ;
+  // Indicate we started successfully
 	std::cout << "Here we go.\n";
-	// narray.push_back(new Node(1, "apmem~Hi there, User.", 2));
-	// narray.push_back(new Node(2, "apmem~I'm Indexus", 3));
-	// narray.push_back(new Node(3, "apmem~Printing myself!", 4));
-	// narray.push_back(new Node(4, "apmem~Looping...", 6));
-	// narray.push_back(new Node(6, "print~0", 7));
-	// narray.push_back(new Node(7, "print~1", 8));
-	// narray.push_back(new Node(8, "print~2", 5));
-	// narray.push_back(new Node(5, "print~3", 5));
-	//narray.push_back (new Node(1, "readf~textFile.txt", 6));
-	//narray.push_back (new Node(6, "print~0", 7));
-	//narray.push_back (new Node(7, "popla", 2));
+
+  // Setup node instructions. Later to be replaced by control file
+
+  // Log the restart
 	narray.push_back (new Node(1, "apmem~!!!RESTART!!!", 2));
 	narray.push_back (new Node(2, "logtx~0", 3));
 	narray.push_back (new Node(3, "popla", initialNode));
+  // Set up our incrementing integer
 	narray.push_back (new Node(4, "apmem~4", 6));
 	//narray.push_back (new Node(5, "donoth~0", 6));
+  // Log the value of the integer, increment, then go back and start again
 	narray.push_back (new Node(6, "logtx~0", 7));
 	narray.push_back (new Node(7, "incre~0", 8));
 	narray.push_back (new Node(8, "delay~0", initialNode));
 
+  // WIP: read nodes from file
+  string controlPath = “controlCode/core.ind”;
+  //loadInstructionNodesFrom (controlPath);
+
+  // Run the program we prepared
 	run (startPointer);
 	return 0;
 }
