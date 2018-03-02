@@ -169,11 +169,11 @@ int main () {
 	narray.push_back (new Node(1, "apmem~!!!RESTART!!!", 2));
 	narray.push_back (new Node(2, "logtx~0", 3));
 	narray.push_back (new Node(3, "popla", initialNode));
-	narray.push_back (new Node(4, "apmem~4", 5));
-	narray.push_back (new Node(5, "donoth~0", 6));
+	narray.push_back (new Node(4, "apmem~4", 6));
+	//narray.push_back (new Node(5, "donoth~0", 6));
 	narray.push_back (new Node(6, "logtx~0", 7));
 	narray.push_back (new Node(7, "incre~0", 8));
-	narray.push_back (new Node(8, "delay~100", initialNode));
+	narray.push_back (new Node(8, "delay~0", initialNode));
 
 	run (startPointer);
 	return 0;
