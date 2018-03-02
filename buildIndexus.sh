@@ -1,7 +1,9 @@
-echo "Indexus builder started"
+echo "Indexus Builder started"
 DATE=`date +%d-%m-%Y-%H:%M`
 echo "Entering dev/src/"
 cd dev/src/
+echo “Copying script files”
+cp controlCode ../../controlCode
 truncate -s 0 ../bin/final.cc
 for file in *.cc
 do
