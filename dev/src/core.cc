@@ -11,10 +11,6 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
-#include "inclusion/node.cc"
-#include "inclusion/utilities.cc"
-#include "inclusion/log.cc"
-#include “inclusion/vars.cc”
 
 vector<Node*> narray;
 int startPointer = 1;
@@ -166,26 +162,13 @@ int initialNode = 4;
 int main () {
   // Increment the run counter, so we generate a new log file
 	incrementRunCount();
+
   // Indicate we started successfully
 	std::cout << "Here we go.\n";
 
-  // Setup node instructions. Later to be replaced by control file
-
-  // Log the restart
-	narray.push_back (new Node(1, "apmem~!!!RESTART!!!", 2));
-	narray.push_back (new Node(2, "logtx~0", 3));
-	narray.push_back (new Node(3, "popla", initialNode));
-  // Set up our incrementing integer
-	narray.push_back (new Node(4, "apmem~4", 6));
-	//narray.push_back (new Node(5, "donoth~0", 6));
-  // Log the value of the integer, increment, then go back and start again
-	narray.push_back (new Node(6, "logtx~0", 7));
-	narray.push_back (new Node(7, "incre~0", 8));
-	narray.push_back (new Node(8, "delay~0", initialNode));
-
-  // WIP: read nodes from file
-  string controlPath = “controlCode/core.ind”;
-  //loadInstructionNodesFrom (controlPath);
+  // Read nodes from control file
+  string controlPath = "controlCode/core.ind";
+  loadInstructionNodesFrom (controlPath);
 
   // Run the program we prepared
 	run (startPointer);

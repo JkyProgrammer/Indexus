@@ -2,16 +2,16 @@ echo "Indexus Builder started"
 DATE=`date +%d-%m-%Y-%H:%M`
 echo "Entering dev/src/"
 cd dev/src/
-echo “Copying script files”
-cp controlCode ../../controlCode
+echo "Copying script files"
+bash ../../copyScripts.sh
 truncate -s 0 ../bin/final.cc
+echo "Searching for source files";
 for file in *.cc
 do
- echo "Found source file $file"
+ echo "Including source file $file"
  name=`echo "$file" | cut -d'.' -f1`
 # g++ $file -o "../bin/$name.o"
  fileinc=\"../src/$file\"
- echo "Including"
  echo "#include "$fileinc"" >> ../bin/final.cc
 done
 echo "Leaving dev/src/"
