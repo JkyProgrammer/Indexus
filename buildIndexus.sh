@@ -1,5 +1,8 @@
+typeset -i buildNum=$(cat logs/buildcounter)
+echo $(($buildNum+1)) > logs/buildcounter
 echo "Indexus Builder started"
-DATE=`date +%d-%m-%Y-%H:%M`
+DATE=`date +%d-%m-%Y`
+fileName=$DATE"."$buildNum
 echo "Entering dev/src/"
 cd dev/src/
 echo "Copying script files"
@@ -23,7 +26,7 @@ do
   echo "$line"
 done
 echo "Compiling sources"
-g++ final.cc -std=c++11 -o "Indexus-$DATE"
+g++ final.cc -std=c++11 -o "Indexus-$fileName"
 echo "Cleaning up"
 rm final.cc
-cp "Indexus-$DATE" "../../Indexus-Latest"
+cp "Indexus-$fileName" "../../Indexus-Latest"
