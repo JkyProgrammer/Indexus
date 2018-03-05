@@ -1,0 +1,8 @@
+1*apmem~!!!RESTART!!!*2
+2*logtx~0*3
+3*popla*4
+4*apmem~4*6
+5*donot~0*6
+6*logtx~0*7
+7*incre~0*8
+8*delay~0*4

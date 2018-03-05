@@ -1,0 +1,7 @@
+1*apmem~Enter your name:*7
+7*print~0*2
+2*getin*3
+3*apmem~Hello, *4
+4*cocat~2~1*5
+5*print~3*6
+6*logtx~3*0
