@@ -13,7 +13,7 @@
 #include <iterator>
 
 vector<Node*> narray;
-int startPointer = 1;
+int startPointer = 0;
 std::vector<std::string> memory;
 
 void run (int startNode);
@@ -22,7 +22,7 @@ void convertAndRun (string in) {
 	run (toInt (in));
 }
 
-void interpret (string instruction) {
+int interpret (string instruction) {
 	std::vector<string> splitInstr = split (instruction, '~');
 	string instr = splitInstr.at(0);
 	if (instr.compare ("print") == 0) {
@@ -70,7 +70,7 @@ void interpret (string instruction) {
 		string tx = memory[toInt(splitInstr[1])];
 		log (tx);
 	} else if (instr.compare ("iftru") == 0) {
-		// Compare two values and run a script if the same
+		// Compare two values and jump to a node if the same
 		int memRef1 = toInt (splitInstr[1]);
 		int memRef2 = toInt (splitInstr[2]);
 
@@ -78,7 +78,8 @@ void interpret (string instruction) {
 		string atMem2 = memory[memRef2];
 
 		if (atMem1.compare (atMem2) == 0) {
-			interpret ("runsc~" + splitInstr[3]);
+			//interpret ("runsc~" + splitInstr[3]);
+			return toInt(splitInstr[3]);
 		}
 	} else if (instr.compare ("iffal") == 0) {
 		// Compare two values and run a script if different
@@ -89,7 +90,8 @@ void interpret (string instruction) {
 		string atMem2 = memory[memRef2];
 
 		if (atMem1.compare (atMem2) == 1) {
-			interpret ("runsc~" + splitInstr[3]);
+			//interpret ("runsc~" + splitInstr[3]);
+			return toInt(splitInstr[3]);
 		}
 	} else if (instr.compare ("cocat") == 0) {
 		// Concatenate strings
@@ -113,10 +115,11 @@ void interpret (string instruction) {
 		memory.push_back (to_string(output));
 	} else if (instr.compare ("getin") == 0) {
 		// Get a line of input from the user
-    string inputResult;
-    cin >> inputResult;
+		string inputResult;
+		cin >> inputResult;
 		memory.push_back (inputResult);
 	}
+	return -1;
 }
 
 void run (int startNode) {
@@ -127,8 +130,11 @@ void run (int startNode) {
 		if (ptr != 0) {
 			int index = ptr;
 			Node* n = narray [index];
-			interpret (n -> data);
 			ptr = (n -> pointer);
+			int i = interpret (n -> data);
+			if (i >= 0) {
+				ptr = i;
+			}
 		} else {
 			shldContinue = false;
 		}
@@ -145,8 +151,6 @@ void loadInstructionNodesFrom (string file) {
     narray.push_back (new Node(instruction, pointer));
   }
 }
-
-int initialNode = 0;
 
 int main () {
   // Increment the run counter, so we generate a new log file
