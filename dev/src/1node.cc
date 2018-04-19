@@ -7,15 +7,13 @@ using namespace std;
 
 class Node {
 public:
-	int name;
 	string data;
 	int pointer;
 public:
-	Node (int, string, int);
+	Node (string, int);
 };
 
-Node::Node (int n, string d, int p) {
-	name=n;
+Node::Node (string d, int p) {
 	data=d;
 	pointer=p;
 }
