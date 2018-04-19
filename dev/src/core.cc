@@ -16,16 +16,6 @@ vector<Node*> narray;
 int startPointer = 1;
 std::vector<std::string> memory;
 
-int getNodeWithName (int nam) {
-	int ret = 0;
-	for (int index=0; index < narray.size(); index++) {
-		if ((narray [index] -> name) == nam) {
-			ret = index;
-		}
-	}
-	return ret;
-}
-
 void run (int startNode);
 
 void convertAndRun (string in) {
@@ -135,7 +125,7 @@ void run (int startNode) {
 	while (shldContinue) {
 		// Get by name
 		if (ptr != 0) {
-			int index = getNodeWithName(ptr);
+			int index = ptr;
 			Node* n = narray [index];
 			interpret (n -> data);
 			ptr = (n -> pointer);
@@ -150,14 +140,13 @@ void loadInstructionNodesFrom (string file) {
   std::vector<string> lines = split (cont, '\n');
   for (string line : lines) {
     std::vector<string> parts = split (line, '*');
-    int name = toInt(parts[0]);
-    string instruction = parts[1];
-    int pointer = toInt (parts[2]);
-    narray.push_back (new Node(name, instruction, pointer));
+    string instruction = parts[0];
+    int pointer = toInt (parts[1]);
+    narray.push_back (new Node(instruction, pointer));
   }
 }
 
-int initialNode = 4;
+int initialNode = 0;
 
 int main () {
   // Increment the run counter, so we generate a new log file
