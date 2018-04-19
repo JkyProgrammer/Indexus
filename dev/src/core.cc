@@ -127,7 +127,7 @@ void run (int startNode) {
 	bool shldContinue = true;
 	while (shldContinue) {
 		// Get by name
-		if (ptr != 0) {
+		if (ptr != -1) {
 			int index = ptr;
 			Node* n = narray [index];
 			ptr = (n -> pointer);
@@ -162,7 +162,7 @@ int main () {
   // Read nodes from control file
   string controlPath = "controlCode/core.ind";
   loadInstructionNodesFrom (controlPath);
-
+	std::cout << "Started Indexus with " << narray.size() << " nodes.\n";
   // Run the program we prepared
 	run (startPointer);
 	return 0;

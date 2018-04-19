@@ -1,7 +1,0 @@
-apmem~Enter your name:*1
-print~0*2
-getin*3
-apmem~Hello, *4
-cocat~2~1*5
-print~3*6
-logtx~3*0
