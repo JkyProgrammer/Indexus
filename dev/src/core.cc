@@ -152,7 +152,7 @@ void loadInstructionNodesFrom (string file) {
   }
 }
 
-int main () {
+int main (int argc, char** argv) {
   // Increment the run counter, so we generate a new log file
 	incrementRunCount();
 
@@ -162,8 +162,12 @@ int main () {
   // Read nodes from control file
   string controlPath = "controlCode/core.ind";
   loadInstructionNodesFrom (controlPath);
-	std::cout << "Started Indexus with " << narray.size() << " nodes.\n";
-  // Run the program we prepared
-	run (startPointer);
+	if (narray.size() > 0) {
+		std::cout << "Started Indexus with " << narray.size() << " nodes.\n";
+	  // Run the program we prepared
+		run (startPointer);
+	} else {
+		std::cout << "Zero nodes found. Leaving.\n";
+	}
 	return 0;
 }
