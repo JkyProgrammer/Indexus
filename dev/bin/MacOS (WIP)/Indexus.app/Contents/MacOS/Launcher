@@ -1,3 +1,4 @@
 #!/bin/bash
 ls >> tmp.txt
 cd $APP_ROOT/Contents
+./Indexus-Latest

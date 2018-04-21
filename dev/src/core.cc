@@ -16,13 +16,24 @@ vector<Node*> narray;
 int startPointer = 0;
 std::vector<std::string> memory;
 
-void run (int startNode);
+void run (int startNode, vector<Node*>* nodes);
 
-void convertAndRun (string in) {
-	run (toInt (in));
+void convertAndRun (string in, vector<Node*>* nodes) {
+	run (toInt (in), nodes);
 }
 
-int interpret (string instruction) {
+void loadInstructionNodesFrom (string file, vector<Node*>* to) {
+  string cont = readContentsOfFile (file);
+  std::vector<string> lines = split (cont, '\n');
+  for (string line : lines) {
+    std::vector<string> parts = split (line, '*');
+    string instruction = parts[0];
+    int pointer = toInt (parts[1]);
+    (*to).push_back (new Node(instruction, pointer));
+  }
+}
+
+int interpret (string instruction, vector<Node*>* nodeArray) {
 	std::vector<string> splitInstr = split (instruction, '~');
 	string instr = splitInstr.at(0);
 	if (instr.compare ("print") == 0) {
@@ -42,14 +53,12 @@ int interpret (string instruction) {
 		memory.pop_back();
 	} else if (instr.compare ("runsc") == 0) {
 		// Run script from file
-		string contents = readContentsOfFile (splitInstr[1]);
-		std::vector<string> contentLines = split (contents, '\n');
-		for (string line : contentLines) {
-			interpret (line);
-		}
+		vector<Node*> arr;
+		loadInstructionNodesFrom(splitInstr[1], &arr);
+		run (0, &arr);
 	} else if (instr.compare ("sttch") == 0) {
 		// Start chain on other thread
-		std::thread newThread(convertAndRun, splitInstr.at(1));
+		std::thread newThread(convertAndRun, splitInstr.at(1), nodeArray);
 	} else if (instr.compare ("runsh") == 0) {
 		// Run a shell command at an index
 		string toExecute = memory[toInt(splitInstr[1])];
@@ -82,7 +91,7 @@ int interpret (string instruction) {
 			return toInt(splitInstr[3]);
 		}
 	} else if (instr.compare ("iffal") == 0) {
-		// Compare two values and run a script if different
+		// Compare two values and jump to a node if different
 		int memRef1 = toInt (splitInstr[1]);
 		int memRef2 = toInt (splitInstr[2]);
 
@@ -118,20 +127,76 @@ int interpret (string instruction) {
 		string inputResult;
 		cin >> inputResult;
 		memory.push_back (inputResult);
+	} else if (instr.compare ("biand") == 0) {
+		// Add the result of a binary AND to memory
+		int bi1 = toInt (splitInstr[1]);
+		int bi2 = toInt (splitInstr[2]);
+		int atMem1 = toInt(memory[bi1]);
+		int atMem2 = toInt(memory[bi2]);
+
+		bool bo1 = atMem1;
+		bool bo2 = atMem2;
+
+		if (bo1 && bo2) {
+			interpret ("apmem~1", NULL);
+		} else {
+			interpret ("apmem~0", NULL);
+		}
+	} else if (instr.compare ("binot") == 0) {
+		// Add the result of a binary NOT to memory
+		int bi1 = toInt (splitInstr[1]);
+		int atMem1 = toInt(memory[bi1]);
+
+		bool bo1 = atMem1;
+		if (bo1) {
+			interpret ("apmem~0", NULL);
+		} else {
+			interpret ("apmem~1", NULL);
+		}
+	} else if (instr.compare ("bi-or") == 0) {
+		// Add the result of a binary OR to memory
+		int bi1 = toInt (splitInstr[1]);
+		int bi2 = toInt (splitInstr[2]);
+		int atMem1 = toInt(memory[bi1]);
+		int atMem2 = toInt(memory[bi2]);
+
+		bool bo1 = atMem1;
+		bool bo2 = atMem2;
+
+		if (bo1 || bo2) {
+			interpret ("apmem~1", NULL);
+		} else {
+			interpret ("apmem~0", NULL);
+		}
+	} else if (instr.compare ("bixor") == 0) {
+		// Add the result of a binary XOR to memory
+		int bi1 = toInt (splitInstr[1]);
+		int bi2 = toInt (splitInstr[2]);
+		int atMem1 = toInt(memory[bi1]);
+		int atMem2 = toInt(memory[bi2]);
+
+		bool bo1 = atMem1;
+		bool bo2 = atMem2;
+
+		if ((bo1 || bo2) && !(bo1 && bo2)) {
+			interpret ("apmem~1", NULL);
+		} else {
+			interpret ("apmem~0", NULL);
+		}
 	}
 	return -1;
 }
 
-void run (int startNode) {
+void run (int startNode, vector<Node*>* nodes) {
 	int ptr = startNode;
 	bool shldContinue = true;
 	while (shldContinue) {
 		// Get by name
 		if (ptr != -1) {
 			int index = ptr;
-			Node* n = narray [index];
+			Node* n = (*nodes) [index];
 			ptr = (n -> pointer);
-			int i = interpret (n -> data);
+			int i = interpret (n -> data, nodes);
 			if (i >= 0) {
 				ptr = i;
 			}
@@ -139,17 +204,6 @@ void run (int startNode) {
 			shldContinue = false;
 		}
 	}
-}
-
-void loadInstructionNodesFrom (string file) {
-  string cont = readContentsOfFile (file);
-  std::vector<string> lines = split (cont, '\n');
-  for (string line : lines) {
-    std::vector<string> parts = split (line, '*');
-    string instruction = parts[0];
-    int pointer = toInt (parts[1]);
-    narray.push_back (new Node(instruction, pointer));
-  }
 }
 
 int main (int argc, char** argv) {
@@ -161,11 +215,11 @@ int main (int argc, char** argv) {
 
   // Read nodes from control file
   string controlPath = "controlCode/core.ind";
-  loadInstructionNodesFrom (controlPath);
+  loadInstructionNodesFrom (controlPath, &narray);
 	if (narray.size() > 0) {
 		std::cout << "Started Indexus with " << narray.size() << " nodes.\n";
 	  // Run the program we prepared
-		run (startPointer);
+		run (startPointer, &narray);
 	} else {
 		std::cout << "Zero nodes found. Leaving.\n";
 	}

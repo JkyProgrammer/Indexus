@@ -1,10 +1,4 @@
-apmem~Enter your name:*1
-apmem~Hello, *2
-print~0*3
-getin*4
-cocat~1~2*5
-print~3*6
-logtx~3*7
-popla*8
-popla*9
-delay~1000*2
+apmem~I'm Indexus!*1
+print~0*2
+popla*3
+runsc~controlCode/incrementerTest.ind*-1
