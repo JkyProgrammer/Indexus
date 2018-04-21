@@ -1,4 +1,7 @@
 apmem~5*1
-print~0*2
-incre~0*3
-delay~500*0
+apmem~500000*2
+apmem~Done*3
+print~0*4
+incre~0*5
+iftru~0~1~6*0
+print~2*-1
