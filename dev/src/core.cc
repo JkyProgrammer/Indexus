@@ -205,7 +205,7 @@ void run (int startNode, vector<Node*>* nodes) {
 			break;
 		}
 	}
-	std::cout << "Finished interpreting a node set\n";
+	//std::cout << "Finished interpreting a node set\n";
 }
 
 int main (int argc, char** argv) {
