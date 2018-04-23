@@ -68,3 +68,19 @@ int toInt (string in) {
 	converter >> val;
 	return val;
 }
+void replaceAll (string in, string r, string w) {
+   size_t index = 0;
+   int str1Size = in.size();
+   int searchleng = r.size();
+   while (index < str1Size) {
+     /* Locate the substring to replace. */
+     index = str.find(r, index);
+     if (index == std::string::npos) break;
+
+     /* Make the replacement. */
+     str.replace(index, w.size(), w);
+
+     /* Advance index forward so the next iteration doesn't pick it up as well. */
+     index += searchLeng;
+}
+}
