@@ -189,8 +189,7 @@ int interpret (string instruction, vector<Node*>* nodeArray) {
 
 void run (int startNode, vector<Node*>* nodes) {
 	int ptr = startNode;
-	bool shldContinue = true;
-	while (shldContinue) {
+	while (true) {
 		// Get by name
 		if (ptr != -1) {
 			int index = ptr;
@@ -201,9 +200,10 @@ void run (int startNode, vector<Node*>* nodes) {
 				ptr = i;
 			}
 		} else {
-			shldContinue = false;
+			break;
 		}
 	}
+	std::cout << "Finished interpreting a node set\n";
 }
 
 int main (int argc, char** argv) {

@@ -1,4 +1,7 @@
 apmem~I'm Indexus!*1
 print~0*2
 popla*3
-runsc~controlCode/incrementerTest.ind*-1
+runsc~controlCode/incrementerTest.ind*4
+apmem~I just counted to 500,000*9
+print~0*10
+popla*-1
