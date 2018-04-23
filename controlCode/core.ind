@@ -2,16 +2,11 @@ apmem~I'm Indexus!*1
 print~0*2
 popla*3
 runsc~controlCode/incrementerTest.ind*4
-apmem~I just counted to 500,000*5
+apmem~I just counted to 500,000!*5
 print~0*6
 popla*7
 apmem~Awaiting input....*8
 print~0*9
 getin*10
-apmem~Your input was *11
-cocat~1~2*12
-print~3*13
-popla*14
-popla*15
 runsc~controlCode/inputProcessor.ind*16
 popla*8
