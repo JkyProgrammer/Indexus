@@ -34,7 +34,8 @@ void loadInstructionNodesFrom (string file, vector<Node*>* to) {
 }
 
 int interpret (string instruction, vector<Node*>* nodeArray) {
-   string in = instruction.replaceAll ("$e", std::to_string (memory.size()-1));
+   string in = instruction;
+   replaceAll (in, "$e", std::to_string (memory.size()-1));
 	std::vector<string> splitInstr = split (in, '~');
 	string instr = splitInstr.at(0);
 	if (instr.compare ("print") == 0) {
